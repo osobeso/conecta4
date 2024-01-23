@@ -1,0 +1,96 @@
+﻿@using System.Drawing
+@inject EstadoJuego Estado
+
+<HeadContent>
+    <style>
+        :root {
+            --board-bg: @ColorTranslator.ToHtml(ColorTablero);
+            --player1: @ColorTranslator.ToHtml(ColorJugador1);
+            --player2: @ColorTranslator.ToHtml(ColorJugador2);
+        }
+    </style>
+</HeadContent>
+
+<nav>
+    @for (byte i = 0; i < 7; i++)
+    {
+        var piece = i;
+        <span title="Haz click para jugar una pieza" @onclick="() => JugarPieza(piece)">🔽</span>
+    }
+</nav>
+
+<article>
+    @mensajeGanador  <button style="@EstiloReiniciar" @onclick="ReiniciarJuego">Reiniciar el juego</button>
+    <br />
+    <span class="alert-danger">@mensajeError</span>
+    <span class="alert-info">@TurnoActual</span>
+</article>
+
+<div>
+    <div class="board">
+        @for (var i = 0; i < 42; i++)
+        {
+            <span class="container">
+                <span></span>
+            </span>
+        }
+    </div>
+    @for (var i = 0; i < 42; i++)
+    {
+        <span class="@piezas[i]"></span>
+    }
+</div>
+
+@code {
+    private string[] piezas = new string[42];
+    private string mensajeGanador = string.Empty;
+    private string mensajeError = string.Empty;
+
+    private string TurnoActual => (mensajeGanador == string.Empty) ? $"Turno de Jugador {Estado.TurnoJugador}" : "";
+    private string EstiloReiniciar => (mensajeGanador == string.Empty) ? "display: none;" : "";
+
+    [Parameter]
+    public Color ColorTablero { get; set; } = ColorTranslator.FromHtml("yellow");
+
+    [Parameter]
+    public Color ColorJugador1 { get; set; } = ColorTranslator.FromHtml("red");
+
+    [Parameter]
+    public Color ColorJugador2 { get; set; } = ColorTranslator.FromHtml("blue");
+
+    protected override void OnInitialized()
+    {
+        Estado.ReiniciarTablero();
+    }
+
+    private void JugarPieza(byte col)
+    {
+        mensajeError = string.Empty;
+        try
+        {
+            var player = Estado.TurnoJugador;
+            var turn = Estado.TurnoActual;
+            var landingRow = Estado.JugarPieza(col);
+            piezas[turn] = $"player{player} col{col} drop{landingRow}";
+        }
+        catch (ArgumentException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        mensajeGanador = Estado.VerificarGanador() switch
+        {
+            EstadoJuego.EstadoGanado.Jugador1Gana => "Jugador 1 Gana!",
+            EstadoJuego.EstadoGanado.Jugador2Gana => "Jugador 2 Gana!",
+            EstadoJuego.EstadoGanado.Empate => "Es un empate!",
+            _ => ""
+        };
+    }
+
+    void ReiniciarJuego()
+    {
+        Estado.ReiniciarTablero();
+        mensajeGanador = string.Empty;
+        mensajeError = string.Empty;
+        piezas = new string[42];
+    }
+}
