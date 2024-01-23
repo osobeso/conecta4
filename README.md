@@ -1,137 +1,137 @@
-# Introducing Blazor Web Applications
+# Introducción a las Aplicaciones Web con Blazor
 
-Today we're going to learn how to build a Blazor app by recreating the classic four-in-a-row game, Connect Four.
+Hoy vamos a aprender a construir una aplicación con Blazor recreando el clásico juego de cuatro en línea, Conecta Cuatro.
 
-## What is Blazor?
+## ¿Qué es Blazor?
 
-Blazor is a framework for building web pages with HTML, CSS, and C#. We can define the layout and design of the website using standard HTML and CSS. The interactive components of the web pages can then be managed with C# code that runs on a server or in the browser using a web standard technology called WebAssembly. Blazor allows us to define our web pages and components using Razor syntax, a convenient mixture of HTML and C#. You can easily reuse Blazor components inside other pages and components. This capability means we can build and reuse parts of our app easily.
+Blazor es un marco de trabajo para construir páginas web con HTML, CSS y C#. Podemos definir el diseño y la apariencia del sitio web utilizando HTML y CSS estándar. Los componentes interactivos de las páginas web pueden entonces ser gestionados con código C# que se ejecuta en un servidor o en el navegador utilizando una tecnología estándar web llamada WebAssembly. Blazor nos permite definir nuestras páginas web y componentes utilizando la sintaxis Razor, una mezcla conveniente de HTML y C#. Puedes reutilizar fácilmente los componentes de Blazor dentro de otras páginas y componentes. Esta capacidad significa que podemos construir y reutilizar partes de nuestra aplicación fácilmente.
 
-## What is WebAssembly?
+## ¿Qué es WebAssembly?
 
-WebAssembly is a standard technology available in every modern browser that allows code to run, similar to JavaScript, in a browser. We can use tools to prepare our C# code for use in the browser as a WebAssembly app, and these tools are included with the .NET SDK.
+WebAssembly es una tecnología estándar disponible en todos los navegadores modernos que permite que el código se ejecute, de manera similar a JavaScript, en un navegador. Podemos usar herramientas para preparar nuestro código C# para su uso en el navegador como una aplicación WebAssembly, y estas herramientas están incluidas en el SDK de .NET.
 
-## Structure of this repository
+## Estructura de este repositorio
 
-We're including all of the layout and game logic in this repository as well as a completed sample Blazor Connect Four app to compare your progress with.  We'll walk through the initial construction of the application using the .NET command-line, and you can find an instance of that code with the CSS and game logic in the [0-start](0-start) folder of this repository.  The completed state of the game can be found in the [1-complete](1-complete) folder.
+Incluimos en este repositorio todo el diseño y la lógica del juego, así como una muestra completa de la aplicación Blazor Conecta Cuatro para comparar tu progreso. Vamos a guiarte a través de la construcción inicial de la aplicación usando la línea de comandos de .NET, y puedes encontrar una instancia de ese código con el CSS y la lógica del juego en la carpeta [0-inicio](src/0-inicio) de este repositorio. El estado completado del juego se puede encontrar en la carpeta [1-completado](src/1-completado).
 
-## What we're building
+## Lo que estamos construyendo
 
-This repository will walk you through Blazor and introduce the following concepts:
+Este repositorio te guiará a través de Blazor e introducirá los siguientes conceptos:
 
-- Blazor component fundamentals
-- How to get started with the Blazor Web App project template
-- How to construct and use a layout for a Blazor component
-- How to react to user interactions
+- Fundamentos de componentes de Blazor
+- Cómo empezar con la plantilla de proyecto de Aplicación Web Blazor
+- Cómo construir y usar un diseño para un componente Blazor
+- Cómo reaccionar a las interacciones de los usuarios
 
-We accomplish the above goals by writing a classic four-in-a-row "Connect Four" game that runs in your browser.  In this game, 2 players alternate taking turns placing a gamepiece (typically a checker) in the top of the board.  Game pieces fall to the lowest row of a column and the player that places 4 game pieces to make a line horizontally, vertically, or diagonally wins.
+Logramos los objetivos anteriores escribiendo un clásico juego de cuatro en línea "Conecta Cuatro" que se ejecuta en tu navegador. En este juego, 2 jugadores se turnan para colocar una ficha (típicamente un disco) en la parte superior del tablero. Las fichas caen a la fila más baja de una columna y el jugador que coloca 4 fichas formando una línea horizontal, vertical o diagonalmente gana.
 
-## Create a new Blazor project
+## Crear un nuevo proyecto Blazor
 
-First, let's scaffold a new project for our game.
+Primero, vamos a crear un nuevo proyecto para nuestro juego.
 
-**GitHub Codespaces Instructions** 
+**Instrucciones de GitHub Codespaces**
 
-1. Open a GitHub Codespace. To do this, simply select the green **Code** button. Then click the **+** to create a Codespace on the main branch.
-2. Navigate to the project files in the [0-start folder](0-start)
+1. Abre un GitHub Codespace. Para hacerlo, simplemente selecciona el botón verde **Code**. Luego, haz clic en el **+** para crear un Codespace en la rama principal.
+2. Navega hasta los archivos del proyecto en la carpeta [0-inicio](src/0-inicio)
 
-**Visual Studio Instructions**
+**Instrucciones de Visual Studio**
 
-1. Create a new Blazor app in Visual Studio 2022 by choosing the **File > New > Project** menu.
+1. Crea una nueva aplicación Blazor en Visual Studio 2022 seleccionando el menú **Archivo > Nuevo > Proyecto**.
 
-1. Choose "Blazor Web App" from the list of templates and name it "ConnectFour". Select **Next**.
+1. Elige "Aplicación web Blazor" de la lista de plantillas y nómbrala "ConnectFour". Selecciona **Siguiente**.
 
-1. Choose .NET 8 for the framework version. The Authentication type should be set to **None**, Interactive render mode should be set to **Server**, and Interactivity location should be set to **Per page/component**. Leave all other options as the defaults.
+1. Elige .NET 8 como versión del marco. El tipo de autenticación debe estar configurado en **Ninguno**, el modo de representación interactiva debe estar configurado en **Servidor** y la ubicación de la interactividad debe estar configurada en **Por página/componente**. Deja todas las demás opciones como las predeterminadas.
 
-    This action should create a ConnectFour directory containing our app.
+    Esta acción debería crear un directorio "ConnectFour" que contiene nuestra aplicación.
 
-1. Run the app by pressing <kbd>F5</kbd> in Visual Studio 2022.
+1. Ejecuta la aplicación presionando <kbd>F5</kbd> en Visual Studio 2022.
 
-    You should now see the Blazor app running in your browser:
+    Ahora deberías ver la aplicación Blazor ejecutándose en tu navegador:
 
-    ![Screenshot from the new Blazor Template](img/1-NewTemplate.png)
+    ![Captura de pantalla de la nueva plantilla Blazor](img/1-NewTemplate.png)
 
-Congratulations! You've created your first Blazor app!
+¡Felicidades! ¡Has creado tu primera aplicación Blazor!
 
-## Create a board component
+## Crear un componente de tablero
 
-Next, let's create a game board component to be used by players in our game. The component is defined using Razor syntax, which is a mix of HTML and C#.
+A continuación, creemos un componente de tablero de juego que los jugadores utilizarán en nuestro juego. El componente se define utilizando la sintaxis Razor, que es una mezcla de HTML y C#.
 
-1. Right-click on the *Components* folder in the Solution Explorer of Visual Studio. Choose **Add > Razor Component** from the context menu and name the file *Board.razor*.
+1. Haz clic con el botón derecho en la carpeta *Components* en el Explorador de soluciones de Visual Studio. Elige **Agregar > Componente Razor** en el menú contextual y nombra el archivo *Tablero.razor*.
 
-    We'll use this component to hold everything needed for the game-board layout and managing interactions with it. The initial contents of this new component are an `h3` tag and a `@code` block indicating where C# code should be written:
+    Usaremos este componente para contener todo lo necesario para el diseño del tablero del juego y para gestionar las interacciones con él. El contenido inicial de este nuevo componente es una etiqueta `h3` y un bloque `@code` que indica dónde se debe escribir el código en C#:
 
     ```razor
-    <h3>Board</h3>
+    <h3>Tablero</h3>
     
     @code {
     
     }
     ```
 
-1. Prepare the `Home` page by opening the *Components/Pages/Home.razor* file and clearing out everything after the third line with the `PageTitle`` tag.
+1. Prepara la página `Home` abriendo el archivo *Components/Pages/Home.razor* y eliminando todo después de la tercera línea con la etiqueta `PageTitle`.
 
     ```razor
     @page "/"
     
-    <PageTitle>Home</PageTitle>
+    <PageTitle>Inicio</PageTitle>
     ```
 
-1. Add our `Board` component to the `Home` page by adding a `<Board />` tag, which matches the filename of our new component.
+1. Añade nuestro componente `Tablero` a la página `Home` agregando una etiqueta `<Tablero />`, que coincide con el nombre de archivo de nuestro nuevo componente.
 
     ```razor
     @page "/"
     
-    <PageTitle>Index</PageTitle>
-    <Board />
+    <PageTitle>Índice</PageTitle>
+    <Tablero />
     ```
 
-    The *Home.razor* file is a component that can be navigated to from a web browser. It contains HTML, C#, and references to other Blazor components. We can identify this file as a page due to the presence of the `@page "/"` directive on the first line. This directive assigns the "/" route to the component and instructs Blazor to respond with the contents of this file when the default page at the "/" address is requested.
+    El archivo *Home.razor* es un componente al que se puede acceder desde un navegador web. Contiene HTML, C# y referencias a otros componentes de Blazor. Podemos identificar este archivo como una página debido a la presencia de la directiva `@page "/"` en la primera línea. Esta directiva asigna la ruta "/" al componente y le indica a Blazor que responda con el contenido de este archivo cuando se solicite la página predeterminada en la dirección "/" .
 
-1. Run the app with F5 to see the changes. If the app is already running, tap the Hot Reload button next to the Run/Continue button to apply the changes to the running app.
+1. Ejecuta la aplicación con F5 para ver los cambios. Si la aplicación ya está en ejecución, pulsa el botón de Recarga en caliente (Hot Reload) junto al botón Ejecutar/Continuar para aplicar los cambios a la aplicación en ejecución.
 
-    > TIP: Select the **Hot Reload on File Save** option from the Hot Reload menu to apply changes to the running app whenever you change a file.
+    > CONSEJO: Selecciona la opción **Recargar en caliente al guardar el archivo** del menú Recarga en caliente para aplicar los cambios a la aplicación en ejecución cada vez que cambies un archivo.
 
-    ![The initial Board component displayed on the Home page](img/2-Board-Step1.png)
+    ![El componente inicial de Tablero mostrado en la página de inicio](img/2-Board-Step1.png)
 
-Congratulations! You've built your first component and used it on a Blazor page.
+¡Felicidades! ¡Has construido tu primer componente y lo has utilizado en una página Blazor.
 
-## Adding content and style to the game board
+## Añadiendo contenido y estilo al tablero de juego
 
-Blazor components contain all of the HTML and markup needed to be rendered in a web browser. Let's start defining a game board with the seven columns and six rows. We'll add a little style to bring our board to life.
+Los componentes de Blazor contienen todo el HTML y el marcado necesario para ser renderizados en un navegador web. Empecemos por definir un tablero de juego con siete columnas y seis filas. Añadiremos un poco de estilo para dar vida a nuestro tablero.
 
-1. In the *Board.razor* file, remove the HTML at the top and add the following content to define a board with 42 places for game pieces.
+1. En el archivo *Tablero.razor*, elimina el HTML en la parte superior y agrega el siguiente contenido para definir un tablero con 42 lugares para las piezas del juego.
 
-    We can use a C# `for` loop to generate the 42 board positions. The container `span` tag is picked up and repeated with its contents 42 times to represent our board.
+   Podemos utilizar un bucle `for` en C# para generar las 42 posiciones del tablero. La etiqueta `span` del contenedor se toma y se repite con su contenido 42 veces para representar nuestro tablero.
 
-    ```razor
-    <div>
-       <div class="board">
-          @for (var i = 0; i < 42; i++)
-          {
-             <span class="container">
-                <span></span>
-             </span>
-          }
-       </div>
-    </div>
-    `````
+   ```razor
+   <div>
+      <div class="board">
+         @for (var i = 0; i < 42; i++)
+         {
+            <span class="container">
+               <span></span>
+            </span>
+         }
+      </div>
+   </div>
+   ```
 
-When we save the board component, our app refreshes and it appears as an empty page, thanks to the Hot Reload functionality that rebuilds and launches the updated app.
+Cuando guardamos el componente del tablero, nuestra aplicación se actualiza y aparece como una página vacía, gracias a la funcionalidad de Recarga en Caliente (Hot Reload) que reconstruye y lanza la aplicación actualizada.
 
-> [!NOTE]
-> You may be prompted by Visual Studio to restart your app as files change. Confirm that the app should be rebuilt on code edits, and the app will automatically restart and refresh the browser as you add features.
+> [!NOTA]
+> Es posible que Visual Studio te pida reiniciar tu aplicación a medida que cambian los archivos. Confirma que la aplicación debe ser reconstruida cuando se edita el código, y la aplicación se reiniciará automáticamente y se actualizará el navegador a medida que añades características.
 
-### Styling the component
+### Estilizando el componente
 
-Let's add some style to the `Board` component by defining some colors for the frame of the board and the players above the first `div` tag in the *Board.razor* file:
+Añadamos algo de estilo al componente `Tablero` definiendo algunos colores para el marco del tablero y los jugadores arriba de la primera etiqueta `div` en el archivo *Tablero.razor*:
 
 ```razor
 <HeadContent>
     <style>
         :root {
-            --board-bg: yellow;  /** the color of the board **/
-            --player1: red;      /** Player 1's piece color **/
-            --player2: blue;     /** Player 2's piece color **/
+            --board-bg: yellow;  /** el color del tablero **/
+            --jugador1: red;      /** color de las piezas del Jugador 1 **/
+            --jugador2: blue;     /** color de las piezas del Jugador 2 **/
         }
     </style>
 </HeadContent>
@@ -139,25 +139,25 @@ Let's add some style to the `Board` component by defining some colors for the fr
 <div>...</div>
 ```
 
-These CSS variables `--board-bg`, `--player1: red`, `--player2: blue` will be picked up and used in the rest of our stylesheet for this component.
+Estas variables CSS `--board-bg`, `--player1: red`, `--player2: blue` serán tomadas y utilizadas en el resto de nuestra hoja de estilo para este componente.
 
-Next, we'll add a completed stylesheet for the game to the `Board` component.
+A continuación, agregaremos una hoja de estilo completada para el juego en el componente `Tablero`.
 
-1. Right-click in the Solution Explorer on the *Components* folder and create a new CSS file called *Board.razor.css*.
+1. Haz clic derecho en el Explorador de Soluciones en la carpeta *Componentes* y crea un nuevo archivo CSS llamado *Tablero.razor.css*.
 
-1. Copy the following content into the new *Board.razor.css* file:
+1. Copia el siguiente contenido en el nuevo archivo *Tablero.razor.css*:
 
-    ```css
-    div{position:relative}nav{top:4em;width:30em;display:inline-flex;flex-direction:row;margin-left:10px}nav span{width:4em;text-align:center;cursor:pointer;font-size:1em}div.board{margin-top:1em;flex-wrap:wrap;width:30em;height:24em;overflow:hidden;display:inline-flex;flex-direction:row;flex-wrap:wrap;z-index:-5;row-gap:0;pointer-events:none;border-left:10px solid var(--board-bg)}span.container{width:4em;height:4em;margin:0;padding:4px;overflow:hidden;background-color:transparent;position:relative;z-index:-2;pointer-events:none}.container span{width:3.5em;height:3.5em;border-radius:50%;box-shadow:0 0 0 3em var(--board-bg);left:0;position:absolute;display:block;z-index:5;pointer-events:none}.player1,.player2{width:3.5em;height:3.5em;border-radius:50%;left:0;top:0;position:absolute;display:block;z-index:-8}.player1{background-color:var(--player1);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player1)}.player2{background-color:var(--player2);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player2)}.col0{left:calc(0em + 9px)}.col1{left:calc(4em + 9px)}.col2{left:calc(8em + 9px)}.col3{left:calc(12em + 9px)}.col4{left:calc(16em + 9px)}.col5{left:calc(20em + 9px)}.col6{left:calc(24em + 9px)}.drop1{animation-duration:1s;animation-name:drop1}.drop2{animation-duration:1.5s;animation-name:drop2}.drop3{animation-duration:1.6s;animation-name:drop3}.drop4{animation-duration:1.7s;animation-name:drop4}.drop5{animation-duration:1.8s;animation-name:drop5}.drop6{animation-duration:1.9s;animation-name:drop6}@keyframes drop1{100%,75%,90%,97%{transform:translateY(1.27em)}80%{transform:translateY(.4em)}95%{transform:translateY(.8em)}99%{transform:translateY(1em)}}@keyframes drop2{100%,75%,90%,97%{transform:translateY(5.27em)}80%{transform:translateY(3.8em)}95%{transform:translateY(4.6em)}99%{transform:translateY(4.9em)}}@keyframes drop3{100%,75%,90%,97%{transform:translateY(9.27em)}80%{transform:translateY(7.2em)}95%{transform:translateY(8.3em)}99%{transform:translateY(8.8em)}}@keyframes drop4{100%,75%,90%,97%{transform:translateY(13.27em)}80%{transform:translateY(10.6em)}95%{transform:translateY(12em)}99%{transform:translateY(12.7em)}}@keyframes drop5{100%,75%,90%,97%{transform:translateY(17.27em)}80%{transform:translateY(14em)}95%{transform:translateY(15.7em)}99%{transform:translateY(16.5em)}}@keyframes drop6{100%,75%,90%,97%{transform:translateY(21.27em)}80%{transform:translateY(17.4em)}95%{transform:translateY(19.4em)}99%{transform:translateY(20.4em)}}
-    ```
+```css
+div{position:relative}nav{top:4em;width:30em;display:inline-flex;flex-direction:row;margin-left:10px}nav span{width:4em;text-align:center;cursor:pointer;font-size:1em}div.board{margin-top:1em;flex-wrap:wrap;width:30em;height:24em;overflow:hidden;display:inline-flex;flex-direction:row;flex-wrap:wrap;z-index:-5;row-gap:0;pointer-events:none;border-left:10px solid var(--board-bg)}span.container{width:4em;height:4em;margin:0;padding:4px;overflow:hidden;background-color:transparent;position:relative;z-index:-2;pointer-events:none}.container span{width:3.5em;height:3.5em;border-radius:50%;box-shadow:0 0 0 3em var(--board-bg);left:0;position:absolute;display:block;z-index:5;pointer-events:none}.player1,.player2{width:3.5em;height:3.5em;border-radius:50%;left:0;top:0;position:absolute;display:block;z-index:-8}.player1{background-color:var(--player1);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player1)}.player2{background-color:var(--player2);animation-timing-function:cubic-bezier(.5,.05,1,.5);animation-iteration-count:1;animation-fill-mode:forwards;box-shadow:0 0 0 4px var(--player2)}.col0{left:calc(0em + 9px)}.col1{left:calc(4em + 9px)}.col2{left:calc(8em + 9px)}.col3{left:calc(12em + 9px)}.col4{left:calc(16em + 9px)}.col5{left:calc(20em + 9px)}.col6{left:calc(24em + 9px)}.drop1{animation-duration:1s;animation-name:drop1}.drop2{animation-duration:1.5s;animation-name:drop2}.drop3{animation-duration:1.6s;animation-name:drop3}.drop4{animation-duration:1.7s;animation-name:drop4}.drop5{animation-duration:1.8s;animation-name:drop5}.drop6{animation-duration:1.9s;animation-name:drop6}@keyframes drop1{100%,75%,90%,97%{transform:translateY(1.27em)}80%{transform:translateY(.4em)}95%{transform:translateY(.8em)}99%{transform:translateY(1em)}}@keyframes drop2{100%,75%,90%,97%{transform:translateY(5.27em)}80%{transform:translateY(3.8em)}95%{transform:translateY(4.6em)}99%{transform:translateY(4.9em)}}@keyframes drop3{100%,75%,90%,97%{transform:translateY(9.27em)}80%{transform:translateY(7.2em)}95%{transform:translateY(8.3em)}99%{transform:translateY(8.8em)}}@keyframes drop4{100%,75%,90%,97%{transform:translateY(13.27em)}80%{transform:translateY(10.6em)}95%{transform:translateY(12em)}99%{transform:translateY(12.7em)}}@keyframes drop5{100%,75%,90%,97%{transform:translateY(17.27em)}80%{transform:translateY(14em)}95%{transform:translateY(15.7em)}99%{transform:translateY(16.5em)}}@keyframes drop6{100%,75%,90%,97%{transform:translateY(21.27em)}80%{transform:translateY(17.4em)}95%{transform:translateY(19.4em)}99%{transform:translateY(20.4em)}}
+```
 
-    For convenience, you can also find this content in the [0-start/Shared/Board.razor.css](0-start/Shared/Board.razor.css) file in this repository.
+Para mayor comodidad, también puedes encontrar este contenido en el archivo [0-inicio/Components/Tablero.razor.css](src/0-inicio/Components/Tablero.razor.css) en este repositorio.
 
-    Blazor components and pages have a feature called CSS isolation that allows you to create style rules that will only be applied to the contents of that component or page.  By creating a file with the same name as our component and adding the `.css` filename extension, Blazor will recognize this as the styles that should **ONLY** be applied to HTML content in the `Board` component.
+Los componentes y páginas de Blazor tienen una característica llamada aislamiento de CSS que te permite crear reglas de estilo que solo se aplicarán al contenido de ese componente o página. Al crear un archivo con el mismo nombre que nuestro componente y agregar la extensión de archivo `.css`, Blazor reconocerá esto como los estilos que deben aplicarse **SÓLO** al contenido HTML en el componente `Tablero`.
 
-    Here's some of the CSS used to format the board and "punch holes" for each of the spaces. There's more content available than displayed below in the CSS file for the game pieces and their animations on screen.
+Aquí tienes parte del CSS utilizado para dar formato al tablero y "perforar agujeros" para cada uno de los espacios. Hay más contenido disponible en el archivo CSS para las piezas del juego y sus animaciones en pantalla de lo que se muestra a continuación.
 
-    ```css
+```css
     div.board {
         margin-top: 1em;
         flex-wrap: wrap;
@@ -196,66 +196,66 @@ Next, we'll add a completed stylesheet for the game to the `Board` component.
         z-index: 5;
         pointer-events: none;
     }
-    ```
+```
 
-The browser should update for you (if not, you can manually refresh the browser with F5), and you should be greeted with a proper yellow Connect Four board:
+El navegador debería actualizarse automáticamente (si no, puedes actualizarlo manualmente con F5), y deberías ser recibido con un tablero de Conecta Cuatro amarillo adecuado:
 
-![The first appearance of a yellow Connect Four board on screen](img/2-Board-Step2.png)
+![La primera aparición de un tablero amarillo de Conecta Cuatro en la pantalla](img/2-Board-Step2.png)
 
-## Introducing game logic and controls
+## Presentación de la lógica y controles del juego
 
-The game logic for Connect Four is not too difficult to program.  We need some code that will manage the state of the game and identify 4 consecutive game pieces played next to each other and announce the winner.  To help keep this tutorial on-topic with teaching about Blazor, we are providing a class called `GameState.cs` that contains the logic for managing the game.
+La lógica del juego de Conecta Cuatro no es demasiado difícil de programar. Necesitamos algún código que administre el estado del juego y identifique 4 piezas de juego consecutivas jugadas una al lado de la otra y anuncie al ganador. Para ayudar a mantener este tutorial centrado en la enseñanza sobre Blazor, estamos proporcionando una clase llamada `EstadoJuego.cs` que contiene la lógica para gestionar el juego.
 
-The [GameState.cs file is in this repository](1-complete/ConnectFour/Shared/GameState.cs) and you will copy it into your version of the game.
+El [archivo EstadoJuego.cs está en este repositorio](src/1-completado/ConnectFour/EstadoJuego.cs) y lo copiarás en tu versión del juego.
 
-1. Copy the [GameState.cs file](1-complete/ConnectFour/Shared/GameState.cs) from this repository into the root of your project.
+1. Copia el [archivo EstadoJuego.cs](src/1-completado/ConnectFour/EstadoJuego.cs) de este repositorio en la raíz de tu proyecto.
 
-We need to make an instance of the `GameState` available to any component that requests it, and only one instance of `GameState` should be available in our app at a time.  We'll address this need by registering our `GameState` as a singleton service in the app.
+Necesitamos hacer una instancia de `EstadoJuego` disponible para cualquier componente que la solicite, y solo una instancia de `EstadoJuego` debe estar disponible en nuestra aplicación a la vez. Abordaremos esta necesidad registrando nuestro `EstadoJuego` como un servicio singleton en la aplicación.
 
-1. Open the *Program.cs* file at the root of the project and add this statement to configure `GameState` as a singleton service in your app:
+1. Abre el archivo *Program.cs* en la raíz del proyecto y agrega esta declaración para configurar `EstadoJuego` como un servicio singleton en tu aplicación:
 
     ```csharp
-    builder.Services.AddSingleton<GameState>();
+    builder.Services.AddSingleton<EstadoJuego>();
     ```
 
-    We can now inject an instance of the `GameState` class into our `Board` component.
+    Ahora podemos inyectar una instancia de la clase `EstadoJuego` en nuestro componente `Tablero`.
 
-1. Add the following `@inject` directive at the top of the *Board.razor* file to inject the current state of the game into the component:
+1. Agrega la siguiente directiva `@inject` en la parte superior del archivo *Tablero.razor* para inyectar el estado actual del juego en el componente:
 
     ```razor
-    @inject GameState State
+    @inject EstadoJuego Estado
     ```
 
-    We can now start connecting our `Board` component to the state of the game.
+    Ahora podemos empezar a conectar nuestro componente `Tablero` con el estado del juego.
 
-## Reset state
+## Restablecer el estado
 
-Let's begin by resetting the state of the game when the `Board` component is first painted on screen. We'll add some code to reset the state of the game when the component is initialized.
+Comencemos por restablecer el estado del juego cuando el componente `Tablero` se pinte por primera vez en la pantalla. Agregaremos un código para restablecer el estado del juego cuando se inicialice el componente.
 
-1. Add an `OnInitialized` method with a call to `ResetBoard`, inside the `@code` block at the bottom of the *Board.razor* file, like so:
+1. Agrega un método `OnInitialized` con una llamada a `ReiniciarTablero`, dentro del bloque `@code` en la parte inferior del archivo *Tablero.razor*, de la siguiente manera:
 
     ```razor
     @code {
         protected override void OnInitialized()
         {
-            State.ResetBoard();
+            Estado.ReiniciarTablero();
         }
     }
     ```
 
-    When the board is first shown to a user, the state is reset to the beginning of a game.
+    Cuando el tablero se muestra por primera vez a un usuario, el estado se restablece al comienzo del juego.
 
-## Create game pieces
+## Crear las piezas del juego
 
-Next, let's allocate the possible 42 game pieces that could be played. We can represent the game pieces as an array referenced by 42 HTML elements on the board. We can move and place those pieces by assigning a set of CSS classes with column and row positions.
+A continuación, asignemos las posibles 42 piezas de juego que podrían jugarse. Podemos representar las piezas del juego como un conjunto de 42 elementos HTML en el tablero. Podemos mover y colocar esas piezas asignando un conjunto de clases CSS con posiciones de columna y fila.
 
-1. Define an string array field in the code block to hold our game pieces:
+1. Define un campo de matriz de cadenas en el bloque de código para mantener nuestras piezas de juego:
 
     ```razor
     private string[] pieces = new string[42];
     ```
 
-1. Add code to the HTML section that creates 42 `span` tags, one for each game piece, in the same component:
+1. Agrega código a la sección HTML que crea 42 etiquetas `span`, una para cada pieza de juego, en el mismo componente:
 
     ```razor
     @for (var i = 0; i < 42; i++)
@@ -264,7 +264,7 @@ Next, let's allocate the possible 42 game pieces that could be played. We can re
     }
     ```
 
-    Your full code should look like so:
+    Tu código completo debería lucir así:
 
     ```razor
     <div>
@@ -279,128 +279,128 @@ Next, let's allocate the possible 42 game pieces that could be played. We can re
     
         protected override void OnInitialized()
         {
-            State.ResetBoard();
+            Estado.ReiniciarTablero();
         }
     }
     ```
 
-    This assigns an empty string to the CSS class of each game piece span. An empty string for a CSS class prevents the game pieces from appearing on screen as no style is applied to them.
+    Esto asigna una cadena vacía a la clase CSS de cada etiqueta de pieza de juego. Una cadena vacía para una clase CSS evita que las piezas de juego aparezcan en la pantalla, ya que no se les aplica ningún estilo.
 
-## Handle game piece placement
+## Manejar la colocación de las piezas del juego
 
-Let's add a method to handle when a player places a piece in a column. The `GameState` class knows how to assign the correct row for the game piece, and reports back the row that it lands in. We can use this information to assign CSS classes representing the player's color, the final location of the piece, and a CSS drop animation.
+Agreguemos un método para manejar cuando un jugador coloca una pieza en una columna. La clase `EstadoJuego` sabe cómo asignar la fila correcta para la pieza del juego y reporta la fila en la que aterrizó. Podemos usar esta información para asignar clases CSS que representen el color del jugador, la ubicación final de la pieza y una animación CSS de caída.
 
-We call this method `PlayPiece`, and it accepts an input parameter that specifies the column the player has chosen.
+Llamaremos a este método `JugarPieza` y acepta un parámetro de entrada que especifica la columna que el jugador ha elegido.
 
-1. Add this code below the `pieces` array we defined in the previous step.
+1. Agrega este código debajo de la matriz `pieces` que definimos en el paso anterior.
 
     ```csharp
-    private void PlayPiece(byte col)
+    private void JugarPieza(byte col)
     {
-        var player = State.PlayerTurn;
-        var turn = State.CurrentTurn;
-        var landingRow = State.PlayPiece(col);
+        var player = Estado.TurnoJugador;
+        var turn = Estado.CurrentTurn;
+        var landingRow = Estado.JugarPieza(col);
         pieces[turn] = $"player{player} col{col} drop{landingRow}";
     }
     ```
 
-Here's what the `PlayPiece` code does:
+Esto es lo que hace el código de `JugarPieza`:
 
-1. We tell the game state to play a piece in the submitted column called `col` and capture the row the piece landed in.
-1. We can then define the three CSS classes to assign to the game piece to identify which player is currently acting, the column the piece was placed in, and the landing row.
-1. The last line of the method assigns these classes to that game piece in the `pieces` array.
+1. Le decimos al estado del juego que juegue una pieza en la columna enviada llamada `col` y capturamos la fila en la que aterrizó la pieza.
+1. Luego podemos definir las tres clases CSS para asignar a la pieza del juego para identificar qué jugador está actuando actualmente, la columna en la que se colocó la pieza y la fila de aterrizaje.
+1. La última línea del método asigna estas clases a esa pieza del juego en la matriz `pieces`.
 
-If you look in the supplied *Board.razor.css*, you'll find the CSS classes matching column, row, and player turn.
+Si miras en el archivo *Tablero.razor.css* suministrado, encontrarás las clases CSS que coinciden con la columna, la fila y el turno del jugador.
 
-The resultant effect is that the game piece is placed in the column and animated to drop into the bottom-most row when this method is called.
+El efecto resultante es que la pieza del juego se coloca en la columna y se anima para caer en la fila más baja cuando se llama a este método.
 
-## Choosing a column
+## Elección de una columna
 
-We next need to place some controls that allow players to choose a column and call our new `PlayPiece` method. We'll use the "🔽" character to indicate that you can drop a piece in this column.
+A continuación, necesitamos colocar algunos controles que permitan a los jugadores elegir una columna y llamar a nuestro nuevo método `JugarPieza`. Usaremos el carácter "🔽" para indicar que puedes soltar una pieza en esta columna.
 
-1. Above the starting `<div>` tag, add a row of clickable buttons:
+1. Encima de la etiqueta `<div>` de inicio, agrega una fila de botones clicables:
 
     ```html
     <nav>
         @for (byte i = 0; i < 7; i++)
         {
             var piece = i;
-            <span title="Click to play a piece" @onclick="() => PlayPiece(piece)">🔽</span>
+            <span title="Haga clic para jugar una pieza" @onclick="() => JugarPieza(piece)">🔽</span>
         }
     </nav>
     ```
 
-    The `@onclick` attribute specifies an event handler for the click event. But to handle UI events, a Blazor component needs to be rendered using an *interactive render mode*. By default, Blazor components are rendered statically from the server. We can apply an interactive render mode to a component using the `@rendermode` attribute.
+    El atributo `@onclick` especifica un controlador de eventos para el evento de clic. Pero para manejar eventos de interfaz de usuario, un componente Blazor debe renderizarse utilizando un *modo de representación interactivo*. Por defecto, los componentes Blazor se representan estáticamente desde el servidor. Podemos aplicar un modo de representación interactivo a un componente utilizando el atributo `@rendermode`.
 
-1. Update the `Board` component on the `Home` page to use the `InteractiveServer` render mode.
+1. Actualiza el componente `Tablero` en la página `Home` para que use el modo de representación `InteractiveServer`.
 
     ```razor
-    <Board @rendermode="InteractiveServer" />
+    <Tablero @rendermode="InteractiveServer" />
     ```
 
-    The `InteractiveServer` render mode will handle UI events for your components from the server over a WebSocket connection with the browser.
+    El modo de representación `InteractiveServer` manejará los eventos de interfaz de usuario para tus componentes desde el servidor a través de una conexión WebSocket con el navegador.
 
-1. Run the app with these changes. It should look like this now:
+1. Ejecuta la aplicación con estos cambios. Debería lucir así ahora:
 
-    ![Yellow Game Board with drop buttons at the top](img/2-Board-Step3.png)
+    ![Tablero de juego amarillo con botones de soltar en la parte superior](img/2-Board-Step3.png)
 
-    Even better, when we select one of the drop buttons at the top, the following behavior can be observed:
+    ¡Aún mejor, cuando seleccionamos uno de los botones de soltar en la parte superior, se puede observar el siguiente comportamiento:
 
-    ![First piece dropped into board](img/2-board-drop.gif)
+    ![Primera pieza colocada en el tablero](img/2-board-drop.gif)
 
-Great progress! We can now add pieces to the board. The `GameState` object is smart enough to pivot back and forth between the two players. Go ahead and select more drop buttons and watch the results.
+¡Gran progreso! Ahora podemos agregar piezas al tablero. El objeto `EstadoJuego` es lo suficientemente inteligente como para alternar entre los dos jugadores. Adelante, selecciona más botones de soltar y observa los resultados.
 
-## Winning and error handling
+## Ganar y manejo de errores
 
-If you play with the game that you've configured at this point, you'll find that it raises errors when you try to put too many pieces in the same column and when one player has won the game.
+Si juegas con el juego que has configurado en este punto, te darás cuenta de que genera errores cuando intentas colocar demasiadas piezas en la misma columna y cuando un jugador ha ganado el juego.
 
-Let's add some error handling and indicators to our board to make the current state clear. We'll add a status area above the board and below the drop buttons.
+Agreguemos manejo de errores e indicadores en nuestro tablero para hacer que el estado actual sea claro. Agregaremos un área de estado encima del tablero y debajo de los botones de soltar.
 
-1. Insert the following markup after the `nav` element:
+1. Inserta el siguiente marcado después del elemento `nav`:
 
     ```razor
     <nav>...</nav>
     
     <article>
-        @winnerMessage  <button style="@ResetStyle" @onclick="ResetGame">Reset the game</button>
+        @winnerMessage  <button style="@ResetStyle" @onclick="ResetGame">Reiniciar el juego</button>
         <br />
         <span class="alert-danger">@errorMessage</span>
         <span class="alert-info">@CurrentTurn</span>
     </article>
     ```
 
-    This markup allows us to display indicators for:
+    Este marcado nos permite mostrar indicadores para:
 
-    - Announcing a game winner
-    - A button that allows us to restart the game
-    - Error messages
-    - The current player's turn
+    - Anunciar un ganador del juego.
+    - Un botón que nos permite reiniciar el juego.
+    - Mensajes de error.
+    - El turno del jugador actual.
 
-    Let's fill in some logic to set these values.
+    Llenemos con lógica para establecer estos valores.
 
-1. Add the following code after the pieces array:
+1. Agrega el siguiente código después de la matriz `pieces`:
 
     ```csharp
     private string[] pieces = new string[42];
     private string winnerMessage = string.Empty;
     private string errorMessage = string.Empty;
     
-    private string CurrentTurn => (winnerMessage == string.Empty) ? $"Player {State.PlayerTurn}'s Turn" : "";
+    private string CurrentTurn => (winnerMessage == string.Empty) ? $"Turno del Jugador {Estado.TurnoJugador}" : "";
     private string ResetStyle => (winnerMessage == string.Empty) ? "display: none;" : "";
     ```
 
-    - The `CurrentTurn` property is automatically calculated based on the state of the `winnerMessage` and the `PlayerTurn` property of the `GameState`.
-    - The `ResetStyle` is calculated based on contents of the `winnerMessage`. If there's a `winnerMessage`, we make the reset button appear on screen.
+    - La propiedad `CurrentTurn` se calcula automáticamente en función del estado de `winnerMessage` y la propiedad `TurnoJugador` de `EstadoJuego`.
+    - `ResetStyle` se calcula en función del contenido de `winnerMessage`. Si hay un `winnerMessage`, hacemos que el botón de reinicio aparezca en la pantalla.
 
-1. Let's handle the error message when a piece is played. Add a line to clear the error message and then wrap the code in the `PlayPiece` method with a `try...catch` block to set the `errorMessage` if an exception occurred:
+1. Manos la gestión del mensaje de error cuando se juega una pieza. Agrega una línea para borrar el mensaje de error y luego envuelve el código en el método `JugarPieza` con un bloque `try...catch` para establecer `errorMessage` si se produce una excepción:
 
     ```csharp
     errorMessage = string.Empty;
     try
     {
-        var player = State.PlayerTurn;
-        var turn = State.CurrentTurn;
-        var landingRow = State.PlayPiece(col);
+        var player = Estado.TurnoJugador;
+        var turn = Estado.CurrentTurn;
+        var landingRow = Estado.JugarPieza(col);
         pieces[turn] = $"player{player} col{col} drop{landingRow}";
     }
     catch (ArgumentException ex)
@@ -409,61 +409,61 @@ Let's add some error handling and indicators to our board to make the current st
     }
     ```
 
-    Our error handler indicator is simple and uses the Bootstrap CSS framework to display an error in danger mode.
+    Nuestro indicador de manejo de errores es simple y utiliza el framework de CSS Bootstrap para mostrar un error en modo peligroso.
 
-    ![Game board with an error indicating the column is full](img/3-Board-ErrorHandler.png)
+    ![Tablero de juego con un error que indica que la columna está llena](img/3-Board-ErrorHandler.png)
 
-1. Next, let's add the `ResetGame` method that our button triggers to restart a game. Currently, the only way to restart a game is to refresh the page. This code allows us to stay on the same page.
+1. A continuación, agreguemos el método `ReiniciarJuego` que nuestro botón activa para reiniciar un juego. Actualmente, la única forma de reiniciar un juego es actualizar la página. Este código nos permite permanecer en la misma página.
 
     ```csharp
-    void ResetGame()
+    void ReiniciarJuego()
     {
-        State.ResetBoard();
+        Estado.ReiniciarTablero();
         winnerMessage = string.Empty;
         errorMessage = string.Empty;
         pieces = new string[42];
     }
     ```
 
-    Now our `ResetGame` method has the following logic:
+    Ahora nuestro método `ReiniciarJuego` tiene la siguiente lógica:
 
-    - Reset the state of the board.
-    - Hide our indicators.
-    - Reset the pieces array to an empty array of 42 strings.
+    - Restablece el estado del tablero.
+    - Oculta nuestros indicadores.
+    - Restablece la matriz de piezas a una matriz vacía de 42 cadenas.
 
-    This update should allow us to play the game again, and now we see an indicator just above the board declaring the player's turn and eventually the completion of the game.
+    Esta actualización debería permitirnos jugar el juego nuevamente, y ahora vemos un indicador justo encima del tablero que declara el turno del jugador y eventualmente la finalización del juego.
 
-    ![Game over with indicators](img/3-Board-Step1.png)
+    ![Final del juego con indicadores](img/3-Board-Step1.png)
 
-    We're still left in a situation where we can't select the reset button. Let's add some logic in the `PlayPiece` method to detect the end of the game.
+    Todavía estamos en una situación en la que no podemos seleccionar el botón de reinicio. Añadamos alguna lógica en el método `JugarPieza` para detectar el final del juego.
 
-1. Let's detect if there's a winner to the game by adding a switch expression after our `try...catch` block in `PlayPiece`.
+1. Detectemos si hay un ganador en el juego agregando una expresión `switch` después de nuestro bloque `try...catch` en `JugarPieza`.
 
     ```csharp
-    winnerMessage = State.CheckForWin() switch
+    winnerMessage = Estado.CheckForWin() switch
     {
-        GameState.WinState.Player1_Wins => "Player 1 Wins!",
-        GameState.WinState.Player2_Wins => "Player 2 Wins!",
-        GameState.WinState.Tie => "It's a tie!",
+        EstadoJuego.WinState.Player1_Wins => "¡El Jugador 1 Gana!",
+        EstadoJuego.WinState.Player2_Wins => "¡El Jugador 2 Gana!",
+        EstadoJuego.WinState.Empate => "¡Es un empate!",
         _ => ""
     };
     ```
 
-    The `CheckForWin` method returns an enum that reports which player, if any has won the game or if the game is a tie. This switch expression will set the `winnerMessage` field appropriately if a game over state has occurred.
+    El método `CheckForWin` devuelve un enum que informa qué jugador, si alguno, ha ganado el juego o si el juego es un empate. Esta expresión `switch` establecerá el campo `winnerMessage` apropiadamente si se ha producido un estado de final de juego.
 
-    Now when we play and reach a game-ending scenario, these indicators appear:
+    Ahora, cuando jugamos y llegamos a un escenario de final de juego, aparecen estos indicadores:
 
-    ![Game board announcing winner with reset button](img/3-Board-Step2.png)
+    ![Tablero de juego anunciando ganador con botón de reinicio](img/3-Board-Step2.png)
 
-## Customizing the board with parameters
+## Personalizando el tablero con parámetros
 
-The game works, but maybe you don't like our default colors. In Blazor, we can define parameters on our components that allow us to pass in values that look like attributes on an HTML tag.
+El juego funciona, pero tal vez no te gusten nuestros colores predeterminados. En Blazor, podemos definir parámetros en nuestros componentes que nos permiten pasar valores que se ven como atributos en una etiqueta HTML.
 
-Let's add some parameters for the colors on the board, and pass in some groovy colors from the `Home` page.
+Agreguemos algunos parámetros para los colores en el tablero y pasemos algunos colores geniales desde la página `Home`.
 
-Parameters in Blazor are properties on a component that have been decorated with the `Parameter` attribute.
+Los parámetros en Blazor son propiedades en un componente que han sido decoradas con el atributo `Parameter`.
 
-1. In *Board.razor*, let's define three properties for the board color, and each player's color. Before the `OnInitialized`` method, add these lines of code:
+1. En *Tablero.razor*, definamos tres propiedades para el color del tablero y los colores de cada jugador. Antes del método `OnInitialized`, agrega estas líneas de código:
 
     ```csharp
     [Parameter]
@@ -476,15 +476,15 @@ Parameters in Blazor are properties on a component that have been decorated with
     public Color Player2Color { get; set; } = ColorTranslator.FromHtml("blue");
     ```
 
-    We use the `Color` type to ensure that the values passed to our Board component are in-fact colors.
+    Usamos el tipo `Color` para asegurarnos de que los valores pasados a nuestro componente Tablero sean realmente colores.
 
-1. Add a `@using` directive to the top of the *Board.razor* file to indicate we're using content from the `System.Drawing` namespace.
+1. Agrega una directiva `@using` en la parte superior del archivo *Tablero.razor* para indicar que estamos utilizando contenido del espacio de nombres `System.Drawing`.
 
     ```razor
     @using System.Drawing
     ```
 
-1. Use the parameters in the CSS block at the top of *Board.razor* to set the values of the CSS variables.
+1. Usa los parámetros en el bloque CSS en la parte superior de *Tablero.razor* para establecer los valores de las variables CSS.
 
     ```razor
     <HeadContent>
@@ -498,48 +498,48 @@ Parameters in Blazor are properties on a component that have been decorated with
     </HeadContent>
     ```
 
-    This change shouldn't have changed anything in the appearance of our game board.
+    Este cambio no debería haber cambiado nada en la apariencia de nuestro tablero de juego.
 
-1. Let's head back to *Home.razor* and add some parameters to our `Board` tag and see how they change the game
+1. Volvamos a *Home.razor* y agreguemos algunos parámetros a nuestra etiqueta `Tablero` y veamos cómo cambian el juego.
 
     ```razor
-    <Board @rendermode="InteractiveServer"
+    <Tablero @rendermode="InteractiveServer"
          BoardColor="System.Drawing.Color.Black"
          Player1Color="System.Drawing.Color.Green"
          Player2Color="System.Drawing.Color.Purple" />
     ```
 
-    Isn't that a cool looking board?
+    ¿No es un tablero genial?
 
-    ![Connect 4 board with green and purple pieces](img/4-Board.png)
+    ![Tablero de Conecta 4 con piezas verdes y moradas](img/4-Board.png)
 
-## Summary
+## Resumen
 
-We've learned a lot about Blazor and built a neat little game. Here are some of the skills we learned:
+Hemos aprendido mucho sobre Blazor y hemos construido un pequeño juego interesante. Aquí hay algunas de las habilidades que hemos aprendido:
 
-- Created a component
-- Added that component to our home page
-- Used dependency injection to manage the state of a game
-- Made the game interactive with event handlers to place pieces and reset the game
-- Wrote an error handler to report the state of the game
-- Added parameters to our component
+- Creamos un componente.
+- Agregamos ese componente a nuestra página de inicio.
+- Usamos la inyección de dependencias para gestionar el estado de un juego.
+- Hicimos el juego interactivo con controladores de eventos para colocar piezas y reiniciar el juego.
+- Escribimos un manejador de errores para informar el estado del juego.
+- Agregamos parámetros a nuestro componente.
 
-This is just a simple game, and there's so much more you could do with it.  Looking for some challenges to improve it?  Consider the following challenges:
+Este es solo un juego simple, y hay mucho más que podrías hacer con él. ¿Buscas algunos desafíos para mejorarlo? Considera los siguientes desafíos:
 
-- Remove the default layout and extra pages in the app to make it smaller.
-- Improve the parameters to the `Board` component so that you can pass any valid CSS color value.
-- Improve the indicators appearance with some CSS and HTML layout.
-- Introduce sound effects.
-- Add a visual indicator and prevent a drop button from being used when the column is full.
-- Add networking capabilities so that you can play a friend in their browser.
-- Insert the game into a .NET MAUI with Blazor application and play it on your phone or tablet.
+- Elimina el diseño predeterminado y las páginas adicionales en la aplicación para hacerla más pequeña.
+- Mejora los parámetros del componente `Tablero` para que puedas pasar cualquier valor válido de color CSS.
+- Mejora la apariencia de los indicadores con algo de CSS y diseño HTML.
+- Introduce efectos de sonido.
+- Agrega un indicador visual y evita que se utilice un botón de soltar cuando la columna esté llena.
+- Agrega capacidades de redes para que puedas jugar con un amigo en su navegador.
+- Inserta el juego en una aplicación .NET MAUI con Blazor y juega en tu teléfono o tableta.
 
-Happy coding and have fun!
+¡Feliz codificación y diviértete!
 
-## Connect with us
+## Conéctate con nosotros
 
-We're excited to support you on your learning journey! Check out the [.NET Community Page](https://dotnet.microsoft.com/platform/community) to find links to our blogs, YouTube, Twitter, and more.
+¡Estamos emocionados de apoyarte en tu viaje de aprendizaje! Consulta la [Página de Comunidad de .NET](https://dotnet.microsoft.com/platform/community) para encontrar enlaces a nuestros blogs, YouTube, Twitter y más.
 
-## How'd it go?
+## ¿Cómo fue?
 
-Please take this quick, [10 question survey](https://aka.ms/WebLearningSeries-git-survey) to give us your thoughts on this lesson & challenge!
+Por favor, realiza esta rápida [encuesta de 10 preguntas](https://aka.ms/WebLearningSeries-git-survey) para darnos tus opiniones sobre esta lección y el desafío.

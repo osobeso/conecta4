@@ -2,11 +2,10 @@
 
 public class EstadoJuego
 {
-
-    static EstadoJuego()
-    {
-        CalcularLugaresGanadores();
-    }
+	static EstadoJuego()
+	{
+		CalcularLugaresGanadores();
+	}
 
     /// <summary>
     /// Indica si un jugador ha ganado, el juego es un empate o el juego está en curso
@@ -138,7 +137,6 @@ public class EstadoJuego
         if (Tablero.Count(x => x != 0) == 42) return EstadoGanado.Empate;
 
         return EstadoGanado.SinGanador;
-
     }
 
     /// <summary>
@@ -165,8 +163,7 @@ public class EstadoJuego
 
         Tablero[posicionAterrizaje] = TurnoJugador;
 
-        return ConvertLandingSpotToRow(posicionAterrizaje);
-
+        return ConvertirLugarDeAterrizajeAFila(posicionAterrizaje);
     }
 
     public List<int> Tablero { get; private set; } = new List<int>(new int[42]);
@@ -176,11 +173,9 @@ public class EstadoJuego
         Tablero = new List<int>(new int[42]);
     }
 
-    private byte ConvertLandingSpotToRow(int landingSpot)
+    private byte ConvertirLugarDeAterrizajeAFila(int landingSpot)
     {
-
         return (byte)(Math.Floor(landingSpot / (decimal)7) + 1);
-
     }
 
 }
